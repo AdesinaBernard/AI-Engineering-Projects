@@ -1,0 +1,8 @@
+Fetched: python/cpython (72509 stars)
+Fetched: numpy/numpy (31920 stars)
+Fetched: pandas-dev/pandas (48612 stars)
+
+Top repos by engagement score:
+- python/cpython: 141531 (Stars: 72509, Forks: 34511)
+- pandas-dev/pandas: 88380 (Stars: 48612, Forks: 19884)
+- numpy/numpy: 56562 (Stars: 31920, Forks: 12321)

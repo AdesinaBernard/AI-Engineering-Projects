@@ -1,0 +1,16 @@
+{
+  "generated_at": "20260430_193903",
+  "sort_by": "stars",
+  "top_n": 2,
+  "min_stars": 40000,
+  "repos": [
+    {
+      "name": "python/cpython",
+      "stars": 72531,
+      "forks": 34523,
+      "issues": 9401,
+      "language": "Python",
+      "engagement_score": 141577
+    }
+  ]
+}

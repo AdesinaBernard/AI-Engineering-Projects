@@ -1,0 +1,13 @@
+Error fetching python/cpython: HTTPSConnectionPool(host='api.github.com', port=443): Max retries exceeded with url: /repos/python/cpython (Caused by ConnectTimeoutError(<HTTPSConnection(host='api.github.com', port=443) at 0x2b2bc59af90>, 'Connection to api.github.com timed out. (connect timeout=5)'))
+Fetched: numpy/numpy (31935 stars)
+Fetched: pandas-dev/pandas (48628 stars)
+
+Top repos by forks:
+- pandas-dev/pandas: 19888 (forks)
+
+=== Top Repositories ===
+1. pandas-dev/pandas
+   Stars: 48628
+   Forks: 19888
+   Score: 88404
+
