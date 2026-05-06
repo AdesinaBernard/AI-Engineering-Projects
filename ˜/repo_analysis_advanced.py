@@ -77,6 +77,13 @@ def main():
     print("\nTop Repo by Engagement:")
     print(f"{top_repo_engagement['name']} -> Score: {top_repo_engagement['engagement_score']}")
 
+    #Sort repos by engagement score
+    sorted_repos = sorted(results, key=lambda x: x["engagement_score"], reverse=True)
+
+    print("\nRanked by Engagement:")
+    for repo in sorted_repos:
+         print(f"{repo['name']} -> {repo['engagement_score']}")
+         
     # 🔹 LLM-friendly summaries
     print("\nRepo Summaries:")
     for repo in results:
