@@ -1,0 +1,11 @@
+Fetched: python/cpython (72590 stars)
+
+Top repos by engagement:
+- python/cpython: 141698 (engagement)
+
+=== Top Repositories ===
+1. python/cpython
+   Stars: 72590
+   Forks: 34554
+   Score: 141698
+

@@ -1,3 +1,11 @@
+def compute_ctr(clicks, impressions):
+    return clicks / impressions if impressions > 0 else 0
+
+
+def compute_cpc(cost, clicks):
+    return cost / clicks if clicks > 0 else 0
+
+
 def calculate_metrics(campaigns):
     total_clicks = 0
     total_impressions = 0
@@ -7,8 +15,9 @@ def calculate_metrics(campaigns):
         total_clicks += campaign["clicks"]
         total_impressions += campaign["impressions"]
         total_cost += campaign["cost"]
-        ctr = total_clicks / total_impressions
-        cpc = total_cost / total_clicks
+
+    ctr = compute_ctr(total_clicks, total_impressions)
+    cpc = compute_cpc(total_cost, total_clicks)
 
     return {
         "total_clicks": total_clicks,
@@ -25,11 +34,19 @@ campaign_data = [
     {"name": "Campaign C", "clicks": 90, "impressions": 5000, "cost": 40}
 ]
 
-#results = calculate_metrics(campaign_data)
+results = calculate_metrics(campaign_data)
 
-#for campaign in campaign_data:
-    #campaign_ctr = campaign["clicks"] / campaign["impressions"]
-    #print(f"{campaign['name']} -> CTR: {campaign_ctr:.2%}")
+print("\n=== Overall Metrics ===")
+print(results)
 
-best_campaign = max(campaign_data, key=lambda x: x["clicks"] / x["impressions"])
-print(f"Best Campaign: {best_campaign['name']}")
+print("\n=== Campaign Performance ===")
+for campaign in campaign_data:
+    ctr = compute_ctr(campaign["clicks"], campaign["impressions"])
+    print(f"{campaign['name']} -> CTR: {ctr:.2%}")
+
+best_campaign = max(
+    campaign_data,
+    key=lambda x: compute_ctr(x["clicks"], x["impressions"])
+)
+
+print(f"\nBest Campaign: {best_campaign['name']}")

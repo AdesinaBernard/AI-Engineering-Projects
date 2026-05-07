@@ -1,0 +1,51 @@
+Fetched: freeCodeCamp/freeCodeCamp (444241 stars)
+Fetched: nilbuild/developer-roadmap (354292 stars)
+Fetched: sindresorhus/awesome (463147 stars)
+Fetched: facebook/react (244829 stars)
+Fetched: openai/openai-python (30695 stars)
+Fetched: shadcn-ui/ui (113648 stars)
+Fetched: microsoft/vscode (184604 stars)
+Fetched: public-apis/public-apis (432529 stars)
+Fetched: docker/cli (5829 stars)
+Fetched: laravel/laravel (84168 stars)
+
+Top repos by engagement:
+- freeCodeCamp/freeCodeCamp: 533191
+- sindresorhus/awesome: 532687
+- public-apis/public-apis: 527107
+- nilbuild/developer-roadmap: 442366
+- facebook/react: 346831
+- microsoft/vscode: 263922
+- laravel/laravel: 133570
+- shadcn-ui/ui: 131122
+- openai/openai-python: 40233
+- docker/cli: 10079
+
+=== Top Repositories ===
+1. freeCodeCamp/freeCodeCamp
+   Stars: 444241
+   Forks: 44475
+   Score: 533191
+
+AI Insight:
+- 444241
+- 44475
+- freeCodeCamp
+2. sindresorhus/awesome
+   Stars: 463147
+   Forks: 34770
+   Score: 532687
+
+AI Insight:
+- $463147 stars are a lot
+- $34770 forks are a lot
+- $463147 stars are a lot
+3. public-apis/public-apis
+   Stars: 432529
+   Forks: 47289
+   Score: 527107
+
+AI Insight:
+- $432529
+- $47289
+- $432529 * 47289

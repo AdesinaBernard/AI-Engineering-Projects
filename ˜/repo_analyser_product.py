@@ -1,55 +1,40 @@
-
 import sys
 import requests
-import os
-import datetime
 import json
 
-print("RUNNING UPDATED SCRIPT")
-
-# 🔹 LLM CONFIG
 LLM_URL = "http://localhost:8080/completion"
 
 
 def ask_llm(prompt):
     payload = {
-    "prompt": prompt,
-    "n_predict": 120,
-    "temperature": 0.1,
-    "top_k": 40,
-    "top_p": 0.9,
-    "repeat_penalty": 1.2,
-    "stop": ["\n\n"]
+        "prompt": prompt,
+        "n_predict": 120,
+        "temperature": 0.1,
+        "top_k": 40,
+        "top_p": 0.9,
+        "repeat_penalty": 1.2,
+        "stop": ["\n\n"]
     }
 
-
     try:
-        response = requests.post(LLM_URL, json=payload, timeout=60)
+        response = requests.post(
+            LLM_URL,
+            json=payload,
+            timeout=60
+        )
+
         response.raise_for_status()
+
         data = response.json()
 
-        raw_output = data.get("content", "").strip()
-
-        return clean_output(raw_output)
+        return data.get("content", "").strip()
 
     except Exception as e:
-        return f"LLM Error: {e}"
-
-
-def clean_output(text):
-    text = text.strip()
-
-    # Remove markdown artifacts
-    text = text.replace("**", "")
-
-    # Extract bullet points only
-    lines = text.split("\n")
-    bullets = [line for line in lines if line.strip().startswith("-")]
-
-    # Limit to 3 lines
-    bullets = bullets[:3]
-
-    return "\n".join(bullets) if bullets else text
+        return json.dumps({
+            "summary": "LLM request failed",
+            "strength": str(e),
+            "use_case": "Troubleshooting required"
+        })
 
 
 def build_repo_prompt(repo):
@@ -59,17 +44,12 @@ You are a strict JSON generator.
 Rules:
 - Output MUST be valid JSON
 - Do NOT include explanations
-- Do NOT include text outside JSON
-- Keys must be: summary, strength, use_case
+- Keys:
+  summary
+  strength
+  use_case
 
-Example:
-{{
-  "summary": "A Python library for data analysis",
-  "strength": "Widely adopted with strong community",
-  "use_case": "Used in data science and analytics"
-}}
-
-Now analyze this repository:
+Repository:
 
 Name: {repo['name']}
 Stars: {repo['stars']}
@@ -85,7 +65,9 @@ def fetch_repo_data(repo):
 
     try:
         response = requests.get(url, timeout=10)
+
         response.raise_for_status()
+
         data = response.json()
 
         return {
@@ -93,7 +75,7 @@ def fetch_repo_data(repo):
             "stars": data.get("stargazers_count", 0),
             "forks": data.get("forks_count", 0),
             "issues": data.get("open_issues_count", 0),
-            "language": data.get("language")
+            "language": data.get("language") or "Unknown"
         }
 
     except requests.exceptions.RequestException as e:
@@ -101,89 +83,87 @@ def fetch_repo_data(repo):
         return None
 
 
-def main():
-    repo_names = sys.argv[1:]
-
-    if not repo_names:
-        print("Usage: python repo_analyser_product.py <repo1> <repo2> ...")
-        sys.exit(1)
+def analyze_repos(repo_names):
 
     results = []
 
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    report_path = os.path.join(os.path.dirname(__file__), f"report_{timestamp}.txt")
+    for repo in repo_names:
 
-    with open(report_path, "w") as f:
+        repo_data = fetch_repo_data(repo)
 
-        # 🔹 Fetch repos
-        for repo in repo_names:
-            repo_data = fetch_repo_data(repo)
+        if repo_data:
 
-            if repo_data:
-                results.append(repo_data)
-                print(f"Fetched: {repo_data['name']} ({repo_data['stars']} stars)")
-                f.write(f"Fetched: {repo_data['name']} ({repo_data['stars']} stars)\n")
-
-        if not results:
-            print("No valid repos were fetched.")
-            return
-
-        # 🔹 Compute engagement
-        for repo in results:
-            repo["engagement_score"] = repo["stars"] + repo["forks"] * 2
-
-        ranked = sorted(results, key=lambda x: x["engagement_score"], reverse=True)
-
-        print("\nTop repos by engagement:")
-        f.write("\nTop repos by engagement:\n")
-
-        for repo in ranked:
-            line = f"- {repo['name']}: {repo['engagement_score']}"
-            print(line)
-            f.write(line + "\n")
-
-        # 🔹 Top repos
-        top_results = ranked[:3]
-
-        print("\n=== Top Repositories ===")
-        f.write("\n=== Top Repositories ===\n")
-
-        for i, repo in enumerate(top_results, 1):
-
-            output_line = (
-                f"{i}. {repo['name']}\n"
-                f"   Stars: {repo['stars']}\n"
-                f"   Forks: {repo['forks']}\n"
-                f"   Score: {repo['engagement_score']}\n"
+            repo_data["engagement_score"] = (
+                repo_data["stars"] +
+                repo_data["forks"] * 2
             )
 
-            print(output_line)
-            f.write(output_line + "\n")
+            results.append(repo_data)
 
-            # 🔥 LLM INTEGRATION (THIS WAS MISSING BEFORE)
-            print("Generating AI insight...")
+    if not results:
+        return []
 
-            prompt = build_repo_prompt(repo)
-            insight = ask_llm(prompt)
-            insight = insight.strip().replace("```json", "").replace("```", "")
+    ranked = sorted(
+        results,
+        key=lambda x: x["engagement_score"],
+        reverse=True
+    )
 
-            try:
-                parsed = json.loads(insight)
+    output = []
 
-                print("AI Insight (Structured):")
-                print(parsed)
+    for repo in ranked[:3]:
 
-                f.write("AI Insight (JSON):\n")
-                f.write(json.dumps(parsed, indent=2) + "\n")
+        prompt = build_repo_prompt(repo)
 
-            except json.JSONDecodeError:
-                print("⚠️ Failed to parse JSON. Raw output:")
-                print(insight)
+        insight = ask_llm(prompt)
 
-                f.write("Invalid JSON Output:\n")
-                f.write(insight + "\n")
+        insight = (
+            insight
+            .replace("```json", "")
+            .replace("```", "")
+            .strip()
+        )
 
-    print(f"\nReport saved to: {report_path}")
+        try:
+            parsed = json.loads(insight)
+
+        except json.JSONDecodeError:
+
+            parsed = {
+                "summary": "Invalid JSON output",
+                "strength": insight,
+                "use_case": "Prompt tuning needed"
+            }
+
+        output.append({
+            "repo": repo["name"],
+            "stars": repo["stars"],
+            "forks": repo["forks"],
+            "language": repo["language"],
+            "engagement_score": repo["engagement_score"],
+            "ai_insight": parsed
+        })
+
+    return output
+
+
+def main():
+
+    repo_names = sys.argv[1:]
+
+    if not repo_names:
+
+        print("Usage:")
+        print(
+            "python repo_analyser_product.py "
+            "python/cpython numpy/numpy"
+        )
+
+        sys.exit(1)
+
+    results = analyze_repos(repo_names)
+
+    print(json.dumps(results, indent=4))
 
 
 if __name__ == "__main__":

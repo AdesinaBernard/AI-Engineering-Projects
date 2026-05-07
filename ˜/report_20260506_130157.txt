@@ -1,0 +1,66 @@
+Fetched: freeCodeCamp/freeCodeCamp (444245 stars)
+Fetched: nilbuild/developer-roadmap (354294 stars)
+Fetched: sindresorhus/awesome (463160 stars)
+Fetched: facebook/react (244829 stars)
+Fetched: openai/openai-python (30695 stars)
+Fetched: shadcn-ui/ui (113648 stars)
+Fetched: microsoft/vscode (184604 stars)
+Fetched: public-apis/public-apis (432540 stars)
+Fetched: docker/cli (5829 stars)
+Fetched: laravel/laravel (84169 stars)
+
+Top repos by engagement:
+- freeCodeCamp/freeCodeCamp: 533195
+- sindresorhus/awesome: 532704
+- public-apis/public-apis: 527126
+- nilbuild/developer-roadmap: 442368
+- facebook/react: 346831
+- microsoft/vscode: 263918
+- laravel/laravel: 133571
+- shadcn-ui/ui: 131122
+- openai/openai-python: 40233
+- docker/cli: 10079
+
+=== Top Repositories ===
+1. freeCodeCamp/freeCodeCamp
+   Stars: 444245
+   Forks: 44475
+   Score: 533195
+
+Invalid JSON Output:
+{
+  "summary": "A popular learning platform",
+  "strength": "Popularity and community support",
+  "use_case": "Learning web development concepts"
+}
+ {
+  "summary": "An open source project with a large amount of users.",
+  "strength": "Large number of forks",
+  "use_case": "Used in learning web development."
+}
+
+2. sindresorhus/awesome
+   Stars: 463160
+   Forks: 34772
+   Score: 532704
+
+AI Insight (JSON):
+{
+  "summary": "A library for creating a simple web server",
+  "strength": "Simple and easy to use.",
+  "use_case": "Creating simple web servers."
+}
+3. public-apis/public-apis
+   Stars: 432540
+   Forks: 47293
+   Score: 527126
+
+Invalid JSON Output:
+{
+  "summary": "API for accessing APIs",
+  "strength": "Widely adopted with strong community",
+  "use_case": "Used in data science and analytics"
+}
+
+{"summary":"API for accessing APIs","strength":"Widely adopted with strong community","use_case":"Used in data science and analytics"}
+

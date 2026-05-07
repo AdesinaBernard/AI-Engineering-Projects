@@ -1,0 +1,18 @@
+Fetched: python/cpython (72590 stars)
+Fetched: numpy/numpy (31979 stars)
+
+Top repos by engagement:
+- python/cpython: 141698 (engagement)
+- numpy/numpy: 56663 (engagement)
+
+=== Top Repositories ===
+1. python/cpython
+   Stars: 72590
+   Forks: 34554
+   Score: 141698
+
+2. numpy/numpy
+   Stars: 31979
+   Forks: 12342
+   Score: 56663
+
