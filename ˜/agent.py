@@ -1,54 +1,87 @@
 from repo_analyser_product import analyze_repos
 from router import route_request
+from memory import (
+    save_repos,
+    get_last_repos,
+    save_message,
+    get_history
+)
 
 
 def main():
+
     print("=== AI Agent Started ===")
 
-    query = input("What do you want to do? ")
+    while True:
 
-    action = route_request(query)
-
-    print(f"Agent decided to: {action}")
-
-    if action == "analyze_repos":
-
-        repos_input = input(
-            "Enter repos (comma separated): "
+        query = input(
+            "\nWhat do you want to do? "
         )
 
-        repos = [
-            repo.strip()
-            for repo in repos_input.split(",")
-            if repo.strip()
-        ]
+        if query.lower() == "exit":
+            print("Goodbye.")
+            break
 
-        print("Running repository analysis...")
+        save_message("user", query)
 
-        results = analyze_repos(repos)
+        # 🔹 MEMORY FOLLOW-UP
+        if "language" in query.lower():
 
-        if not results:
-            print("No results returned.")
-            return
+            last_repos = get_last_repos()
 
-        print("\n=== Agent Results ===\n")
+            if not last_repos:
+                print("No repositories in memory.")
 
-        for repo in results:
+            else:
+                results = analyze_repos(last_repos)
 
-            print(f"Repo: {repo['repo']}")
-            print(f"Stars: {repo['stars']}")
-            print(f"Forks: {repo['forks']}")
-            print(f"Language: {repo['language']}")
+                for repo in results:
+                    print(
+                        f"{repo['repo']} uses "
+                        f"{repo['language']}"
+                    )
 
-            print("AI Insight:")
+            continue
 
-            print(repo["ai_insight"])
+        # 🔹 ROUTING
+        action = route_request(query)
 
-            print("-" * 50)
+        print(f"Agent decided to: {action}")
 
-    else:
-        print("Unknown request.")
+        if action == "analyze_repos":
 
+            repos_input = input(
+                "Enter repos (comma separated): "
+            )
+
+            repos = [
+                repo.strip()
+                for repo in repos_input.split(",")
+                if repo.strip()
+            ]
+
+            save_repos(repos)
+
+            print("Running repository analysis...")
+
+            results = analyze_repos(repos)
+
+            print("\n=== Agent Results ===\n")
+
+            for repo in results:
+
+                print(f"Repo: {repo['repo']}")
+                print(f"Stars: {repo['stars']}")
+                print(f"Forks: {repo['forks']}")
+                print(f"Language: {repo['language']}")
+
+                print("AI Insight:")
+                print(repo["ai_insight"])
+
+                print("-" * 50)
+
+        else:
+            print("Unknown request.")
 
 if __name__ == "__main__":
     main()
