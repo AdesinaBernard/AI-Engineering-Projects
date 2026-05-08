@@ -1,13 +1,5 @@
 from repo_analyser_product import analyze_repos
-
-
-def agent(user_input):
-    user_input = user_input.lower()
-
-    if "repo" in user_input or "github" in user_input:
-        return "analyze_repos"
-
-    return "unknown"
+from router import route_request
 
 
 def main():
@@ -15,7 +7,7 @@ def main():
 
     query = input("What do you want to do? ")
 
-    action = agent(query)
+    action = route_request(query)
 
     print(f"Agent decided to: {action}")
 

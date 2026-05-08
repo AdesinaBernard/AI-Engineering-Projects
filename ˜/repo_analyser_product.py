@@ -39,24 +39,34 @@ def ask_llm(prompt):
 
 def build_repo_prompt(repo):
     return f"""
-You are a strict JSON generator.
+You are a strict API JSON generator.
 
-Rules:
-- Output MUST be valid JSON
-- Do NOT include explanations
-- Keys:
-  summary
-  strength
-  use_case
+TASK:
+Analyze the repository and return ONLY valid JSON.
 
-Repository:
+RULES:
+- Output ONLY ONE JSON object
+- No markdown
+- No explanations
+- No extra text
+- No code blocks
+- No comments
 
+REQUIRED FORMAT:
+
+{{
+  "summary": "short summary",
+  "strength": "main strength",
+  "use_case": "primary use case"
+}}
+
+REPOSITORY DATA:
 Name: {repo['name']}
 Stars: {repo['stars']}
 Forks: {repo['forks']}
 Language: {repo['language']}
 
-Output:
+JSON:
 """
 
 
