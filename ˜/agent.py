@@ -6,6 +6,7 @@ from memory import (
     save_message,
     get_history
 )
+from tools import TOOLS
 
 
 def main():
@@ -48,37 +49,77 @@ def main():
 
         print(f"Agent decided to: {action}")
 
-        if action == "analyze_repos":
+        if action in TOOLS:
 
-            repos_input = input(
-                "Enter repos (comma separated): "
-            )
+    # -----------------------------
+    # TOOL INPUT HANDLING
+    # -----------------------------
 
-            repos = [
-                repo.strip()
-                for repo in repos_input.split(",")
-                if repo.strip()
-            ]
+            if action == "analyze_repos":
 
-            save_repos(repos)
+                repos_input = input(
+                    "Enter repos (comma separated): "
+                )
 
-            print("Running repository analysis...")
+                repos = [
+                    repo.strip()
+                    for repo in repos_input.split(",")
+                    if repo.strip()
+               ]
 
-            results = analyze_repos(repos)
+                save_repos(repos)
+
+                tool_input = repos
+
+            elif action == "summarizer":
+
+                article_text = input(
+                   "Paste the article text: "
+               )
+
+                tool_input = article_text
+
+            else:
+                tool_input = query
+
+    # -----------------------------
+    # RUN TOOL
+    # -----------------------------
+
+            print(f"Running tool: {action}")
+
+            tool_function = TOOLS[action]
+
+            results = tool_function(tool_input)
+
+    # -----------------------------
+    # DISPLAY RESULTS
+    # -----------------------------
 
             print("\n=== Agent Results ===\n")
 
-            for repo in results:
+            if action == "analyze_repos":
 
-                print(f"Repo: {repo['repo']}")
-                print(f"Stars: {repo['stars']}")
-                print(f"Forks: {repo['forks']}")
-                print(f"Language: {repo['language']}")
+                if not results:
+                   print("No repository results returned.")
 
-                print("AI Insight:")
-                print(repo["ai_insight"])
+                else:
 
-                print("-" * 50)
+                    for repo in results:
+
+                       print(f"Repo: {repo['repo']}")
+                       print(f"Stars: {repo['stars']}")
+                       print(f"Forks: {repo['forks']}")
+                       print(f"Language: {repo['language']}")
+
+                       print("AI Insight:")
+                       print(repo["ai_insight"])
+
+                    print("-" * 50)
+
+            else:
+
+                print(results)
 
         else:
             print("Unknown request.")
