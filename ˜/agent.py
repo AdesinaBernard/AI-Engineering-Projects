@@ -7,7 +7,7 @@ from memory import (
     get_history
 )
 from tools import TOOLS
-
+from planner import create_plan
 
 def main():
 
@@ -18,6 +18,15 @@ def main():
         query = input(
             "\nWhat do you want to do? "
         )
+        if "and" in query.lower():
+
+            print("Creating execution plan...\n")
+
+            plan = create_plan(query)
+
+            print("=== PLAN ===")
+            print(plan)
+            print()
 
         if query.lower() == "exit":
             print("Goodbye.")
