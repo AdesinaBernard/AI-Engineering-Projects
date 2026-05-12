@@ -1,0 +1,9 @@
+Python is a high-level programming language known for readability and simplicity.
+
+NumPy is a Python library used for numerical computing and arrays.
+
+The Premier League is the top football division in England.
+
+Artificial intelligence enables machines to simulate human intelligence.
+
+RAG stands for Retrieval-Augmented Generation.

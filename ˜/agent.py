@@ -23,6 +23,8 @@ def execute_plan(plan):
 
         print(f"\nExecuting step: {line}")
 
+
+
         # -----------------------------
         # ANALYZE REPOS
         # -----------------------------
@@ -81,6 +83,8 @@ def main():
         query = input(
             "\nWhat do you want to do? "
         )
+        query = query.strip()
+        
         if "and" in query.lower():
 
           print("Creating execution plan...\n")
@@ -91,6 +95,7 @@ def main():
           print(plan)
 
           execute_plan(plan)
+
 
           continue
 
@@ -116,7 +121,7 @@ def main():
                         f"{repo['repo']} uses "
                         f"{repo['language']}"
                     )
-
+        
             continue
 
         # 🔹 ROUTING
@@ -129,8 +134,11 @@ def main():
     # -----------------------------
     # TOOL INPUT HANDLING
     # -----------------------------
+            if action == "rag":
 
-            if action == "analyze_repos":
+                tool_input = query
+
+            elif action == "analyze_repos":
 
                 repos_input = input(
                     "Enter repos (comma separated): "
@@ -190,7 +198,7 @@ def main():
                        print("AI Insight:")
                        print(repo["ai_insight"])
 
-                    print("-" * 50)
+                       print("-" * 50)
 
             else:
 
