@@ -1,4 +1,5 @@
 from repo_analyser_product import analyze_repos
+from summarizer import summarize_text
 from router import route_request
 from memory import (
     save_repos,
@@ -8,6 +9,68 @@ from memory import (
 )
 from tools import TOOLS
 from planner import create_plan
+
+def execute_plan(plan):
+
+    lines = plan.split("\n")
+
+    for line in lines:
+
+        line = line.strip()
+
+        if not line:
+            continue
+
+        print(f"\nExecuting step: {line}")
+
+        # -----------------------------
+        # ANALYZE REPOS
+        # -----------------------------
+
+        if line.startswith("analyze_repos"):
+
+            repo_text = line.replace(
+                "analyze_repos",
+                ""
+            ).strip()
+
+            repos = [
+                repo.strip()
+                for repo in repo_text.split(",")
+                if repo.strip()
+            ]
+
+            results = analyze_repos(repos)
+
+            print("\n=== Repo Analysis ===\n")
+
+            for repo in results:
+
+                print(f"Repo: {repo['repo']}")
+                print(f"Stars: {repo['stars']}")
+                print(f"Forks: {repo['forks']}")
+                print(f"Language: {repo['language']}")
+
+                print("AI Insight:")
+                print(repo["ai_insight"])
+
+                print("-" * 50)
+
+        # -----------------------------
+        # SUMMARIZER
+        # -----------------------------
+
+        elif line.startswith("summarizer"):
+
+            summary_input = line.replace(
+                "summarizer",
+                ""
+            ).strip()
+
+            result = summarize_text(summary_input)
+
+            print("\n=== Summary ===\n")
+            print(result)
 
 def main():
 
@@ -20,13 +83,16 @@ def main():
         )
         if "and" in query.lower():
 
-            print("Creating execution plan...\n")
+          print("Creating execution plan...\n")
 
-            plan = create_plan(query)
+          plan = create_plan(query)
 
-            print("=== PLAN ===")
-            print(plan)
-            print()
+          print("=== PLAN ===")
+          print(plan)
+
+          execute_plan(plan)
+
+          continue
 
         if query.lower() == "exit":
             print("Goodbye.")
