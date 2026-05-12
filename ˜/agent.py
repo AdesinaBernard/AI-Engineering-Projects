@@ -73,6 +73,20 @@ def execute_plan(plan):
 
             print("\n=== Summary ===\n")
             print(result)
+        
+        elif line.startswith("rag"):
+
+            rag_query = line.replace(
+                            "rag",
+                         ""
+                        ).strip()
+
+            from rag import ask_rag
+
+            result = ask_rag(rag_query)
+
+            print("\n=== RAG RESULT ===\n")
+            print(result)
 
 def main():
 
@@ -84,7 +98,7 @@ def main():
             "\nWhat do you want to do? "
         )
         query = query.strip()
-        
+
         if "and" in query.lower():
 
           print("Creating execution plan...\n")

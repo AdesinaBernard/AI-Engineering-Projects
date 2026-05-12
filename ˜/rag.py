@@ -9,25 +9,68 @@ def load_knowledge_base():
         return f.read()
 
 
-def retrieve_context(query, knowledge_text):
+def chunk_text(text, chunk_size=2):
+
+    lines = [
+        line.strip()
+        for line in text.split("\n")
+        if line.strip()
+    ]
+
+    chunks = []
+
+    for i in range(0, len(lines), chunk_size):
+
+        chunk = "\n".join(
+            lines[i:i + chunk_size]
+        )
+
+        chunks.append(chunk)
+
+    return chunks
+
+def score_chunk(query, chunk):
 
     query_words = query.lower().split()
 
-    lines = knowledge_text.split("\n")
+    chunk_lower = chunk.lower()
 
-    matches = []
+    score = 0
 
-    for line in lines:
+    for word in query_words:
 
-        line_lower = line.lower()
+        if word in chunk_lower:
+            score += 1
 
-        for word in query_words:
+    return score
 
-            if word in line_lower:
-                matches.append(line)
-                break
+def retrieve_context(query, knowledge_text):
 
-    return "\n".join(matches[:3])
+    chunks = chunk_text(knowledge_text)
+
+    scored_chunks = []
+
+    for chunk in chunks:
+
+        score = score_chunk(query, chunk)
+
+        scored_chunks.append(
+            (score, chunk)
+        )
+
+    ranked = sorted(
+        scored_chunks,
+        key=lambda x: x[0],
+        reverse=True
+    )
+
+    best_chunks = [
+        chunk
+        for score, chunk in ranked
+        if score > 0
+    ]
+
+    return "\n\n".join(best_chunks[:2])
 
 
 def ask_rag(query):
@@ -40,7 +83,12 @@ def ask_rag(query):
     )
 
     prompt = f"""
+You are a helpful AI assistant.
+
 Answer the question using ONLY the context below.
+
+If the answer is not in the context, say:
+"I could not find that information in the knowledge base."
 
 CONTEXT:
 {context}

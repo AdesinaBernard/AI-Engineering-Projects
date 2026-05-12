@@ -1,9 +1,11 @@
-Python is a high-level programming language known for readability and simplicity.
+Python is a high-level programming language known for readability and simplicity. It supports multiple programming paradigms and is widely used in web development, automation, artificial intelligence, and data science.
 
-NumPy is a Python library used for numerical computing and arrays.
+NumPy is a Python library used for numerical computing. It provides support for arrays, matrices, and high-performance mathematical operations.
 
-The Premier League is the top football division in England.
+Pandas is a Python library for data manipulation and analysis. It allows users to work with structured data using DataFrames.
 
-Artificial intelligence enables machines to simulate human intelligence.
+Retrieval-Augmented Generation (RAG) is a technique that combines external retrieval systems with large language models. It improves factual accuracy by injecting retrieved context into prompts before generation.
 
-RAG stands for Retrieval-Augmented Generation.
+The Premier League is the top professional football league in England. It consists of 20 clubs competing across a season with promotion and relegation.
+
+Artificial intelligence enables machines to simulate human intelligence. AI systems can perform reasoning, prediction, language understanding, and automation tasks.
