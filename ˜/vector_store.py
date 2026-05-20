@@ -1,0 +1,140 @@
+from sentence_transformers import SentenceTransformer
+import numpy as np
+import json
+import os
+
+model = SentenceTransformer(
+    "all-MiniLM-L6-v2"
+)
+
+VECTOR_DB_FILE = "vector_db.json"
+
+
+knowledge_base = [
+
+    "Python is used for AI and backend development.",
+
+    "NumPy is used for numerical computing.",
+
+    "Pandas is used for data analysis.",
+
+    "RAG combines retrieval with generation.",
+
+    "The Premier League is England's top football division."
+]
+
+
+def create_vector_db():
+
+    vectors = []
+
+    embeddings = model.encode(
+        knowledge_base
+    )
+
+    for text, embedding in zip(
+        knowledge_base,
+        embeddings
+    ):
+
+        vectors.append({
+            "text": text,
+            "embedding": embedding.tolist()
+        })
+
+    with open(
+        VECTOR_DB_FILE,
+        "w"
+    ) as f:
+
+        json.dump(vectors, f)
+
+    print(
+        "Vector database created."
+    )
+
+
+def load_vector_db():
+
+    if not os.path.exists(
+        VECTOR_DB_FILE
+    ):
+
+        create_vector_db()
+
+    with open(
+        VECTOR_DB_FILE,
+        "r"
+    ) as f:
+
+        return json.load(f)
+
+
+def cosine_similarity(a, b):
+
+    a = np.array(a)
+    b = np.array(b)
+
+    return np.dot(a, b) / (
+        np.linalg.norm(a) *
+        np.linalg.norm(b)
+    )
+
+
+def semantic_search(query):
+
+    db = load_vector_db()
+
+    query_embedding = model.encode(
+        [query]
+    )[0]
+
+    scores = []
+
+    for item in db:
+
+        similarity = cosine_similarity(
+            query_embedding,
+            item["embedding"]
+        )
+
+        scores.append({
+            "text": item["text"],
+            "score": similarity
+        })
+
+    ranked = sorted(
+        scores,
+        key=lambda x: x["score"],
+        reverse=True
+    )
+
+    return ranked[:3]
+
+
+if __name__ == "__main__":
+
+    while True:
+
+        query = input(
+            "\nAsk something: "
+        )
+
+        if query.lower() == "exit":
+            break
+
+        results = semantic_search(
+            query
+        )
+
+        print("\nTop Matches:\n")
+
+        for item in results:
+
+            print(
+                f"Score: {item['score']:.4f}"
+            )
+
+            print(item["text"])
+
+            print("-" * 40)
