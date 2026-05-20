@@ -2,6 +2,10 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 import json
 import os
+from conversation_memory import (
+    save_message,
+    get_recent_context
+)
 
 model = SentenceTransformer(
     "all-MiniLM-L6-v2"
@@ -66,13 +70,16 @@ def cosine_similarity(a, b):
         np.linalg.norm(b)
     )
 
-
 def semantic_search(query):
 
     db = load_vector_db()
 
+    contextual_query = build_contextual_query(
+    query
+    )
+
     query_embedding = model.encode(
-        [query]
+    [contextual_query]
     )[0]
 
     scores = []
@@ -98,6 +105,21 @@ def semantic_search(query):
 
     return ranked[:3]
 
+def build_contextual_query(query):
+
+    history = get_recent_context()
+
+    if not history:
+        return query
+
+    return f"""
+        Conversation History:
+        {history}
+
+        Current Query:
+        {query}
+        """
+
 if __name__ == "__main__":
 
     while True:
@@ -108,7 +130,7 @@ if __name__ == "__main__":
 
         if query.lower() == "exit":
             break
-
+        save_message("user", query)
         results = semantic_search(
             query
         )
@@ -122,3 +144,7 @@ if __name__ == "__main__":
                 print(f"Source: {item['source']}")
                 print(item["text"])
                 print("-" * 40)
+                save_message(
+                "assistant",
+                results[0]["text"]
+            )
