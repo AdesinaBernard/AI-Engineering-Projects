@@ -1,0 +1,3 @@
+Python is widely used for AI engineering, automation, and backend systems.
+
+NumPy and Pandas are foundational Python libraries for data science.

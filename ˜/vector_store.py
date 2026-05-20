@@ -10,20 +10,6 @@ model = SentenceTransformer(
 VECTOR_DB_FILE = "vector_db.json"
 
 
-knowledge_base = [
-
-    "Python is used for AI and backend development.",
-
-    "NumPy is used for numerical computing.",
-
-    "Pandas is used for data analysis.",
-
-    "RAG combines retrieval with generation.",
-
-    "The Premier League is England's top football division."
-]
-
-
 def create_vector_db():
 
     vectors = []
@@ -99,6 +85,7 @@ def semantic_search(query):
         )
 
         scores.append({
+            "source": item["source"],
             "text": item["text"],
             "score": similarity
         })
@@ -110,7 +97,6 @@ def semantic_search(query):
     )
 
     return ranked[:3]
-
 
 if __name__ == "__main__":
 
@@ -131,10 +117,8 @@ if __name__ == "__main__":
 
         for item in results:
 
-            print(
-                f"Score: {item['score']:.4f}"
-            )
-
-            print(item["text"])
-
-            print("-" * 40)
+            if item["score"] > 0.2:
+                print(f"Score: {item['score']:.4f}")
+                print(f"Source: {item['source']}")
+                print(item["text"])
+                print("-" * 40)
