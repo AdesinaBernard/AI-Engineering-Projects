@@ -11,8 +11,7 @@ DOCUMENTS_PATH = "documents"
 VECTOR_DB_FILE = "vector_db.json"
 
 
-def chunk_text(text, chunk_size=2):
-
+def chunk_text(text, chunk_size=2, overlap=1):
     lines = [
         line.strip()
         for line in text.split("\n")
@@ -20,14 +19,13 @@ def chunk_text(text, chunk_size=2):
     ]
 
     chunks = []
+    step = max(1, chunk_size - overlap)
 
-    for i in range(0, len(lines), chunk_size):
+    for i in range(0, len(lines), step):
+        chunk = "\n".join(lines[i:i + chunk_size])
 
-        chunk = "\n".join(
-            lines[i:i + chunk_size]
-        )
-
-        chunks.append(chunk)
+        if chunk:
+            chunks.append(chunk)
 
     return chunks
 
