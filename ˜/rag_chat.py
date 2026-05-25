@@ -1,3 +1,4 @@
+from rag_evaluator import evaluate_retrieval, format_sources
 from sentence_transformers import SentenceTransformer
 from conversation_memory import (
     save_message,
@@ -155,11 +156,15 @@ if __name__ == "__main__":
 
         retrieved = retrieve_context(query)
 
-        top_score = retrieved[0]["score"] if retrieved else 0
+        evaluation = evaluate_retrieval(
+            retrieved,
+            threshold=CONFIDENCE_THRESHOLD
+        )
 
-        if top_score < CONFIDENCE_THRESHOLD:
+        if not evaluation["passed"]:
             print("\nAssistant:\n")
             print("I could not find enough relevant information in the knowledge base.")
+            print(f"Reason: {evaluation['reason']}")
             continue
 
         prompt = build_prompt(query, retrieved)
@@ -170,10 +175,10 @@ if __name__ == "__main__":
 
         print("\nSources:")
 
-        for i, item in enumerate(retrieved, 1):
+        for source in format_sources(retrieved):
             print(
-                f"{i}. {item['source']} "
-                f"(confidence={item['score']:.4f})"
+                f"- {source['source']} "
+                f"(score={source['score']})"
             )
 
         save_message("assistant", answer)
