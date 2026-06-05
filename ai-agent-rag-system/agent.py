@@ -1,117 +1,30 @@
-from repo_analyser_product import analyze_repos
-from summarizer import summarize_text
+from advanced_planner import create_advanced_plan
+from agent_executor import execute_plan
 from router import route_request
-from memory import (
-    save_repos,
-    get_last_repos,
-    save_message,
-    get_history
-)
 from tools import TOOLS
-from planner import create_plan
-
-def execute_plan(plan):
-
-    lines = plan.split("\n")
-
-    for line in lines:
-
-        line = line.strip()
-
-        if not line:
-            continue
-
-        print(f"\nExecuting step: {line}")
+from memory import save_repos, get_last_repos, save_message
 
 
+def display_repo_results(results):
+    if not results:
+        print("No repository results returned.")
+        return
 
-        # -----------------------------
-        # ANALYZE REPOS
-        # -----------------------------
+    for repo in results:
+        print(f"Repo: {repo['repo']}")
+        print(f"Stars: {repo['stars']}")
+        print(f"Forks: {repo['forks']}")
+        print(f"Language: {repo['language']}")
+        print("AI Insight:")
+        print(repo["ai_insight"])
+        print("-" * 50)
 
-        if line.startswith("analyze_repos"):
-
-            repo_text = line.replace(
-                "analyze_repos",
-                ""
-            ).strip()
-
-            repos = [
-                repo.strip()
-                for repo in repo_text.split(",")
-                if repo.strip()
-            ]
-
-            results = analyze_repos(repos)
-
-            print("\n=== Repo Analysis ===\n")
-
-            for repo in results:
-
-                print(f"Repo: {repo['repo']}")
-                print(f"Stars: {repo['stars']}")
-                print(f"Forks: {repo['forks']}")
-                print(f"Language: {repo['language']}")
-
-                print("AI Insight:")
-                print(repo["ai_insight"])
-
-                print("-" * 50)
-
-        # -----------------------------
-        # SUMMARIZER
-        # -----------------------------
-
-        elif line.startswith("summarizer"):
-
-            summary_input = line.replace(
-                "summarizer",
-                ""
-            ).strip()
-
-            result = summarize_text(summary_input)
-
-            print("\n=== Summary ===\n")
-            print(result)
-        
-        elif line.startswith("rag"):
-
-            rag_query = line.replace(
-                            "rag",
-                         ""
-                        ).strip()
-
-            from rag import ask_rag
-
-            result = ask_rag(rag_query)
-
-            print("\n=== RAG RESULT ===\n")
-            print(result)
 
 def main():
-
     print("=== AI Agent Started ===")
 
     while True:
-
-        query = input(
-            "\nWhat do you want to do? "
-        )
-        query = query.strip()
-
-        if "and" in query.lower():
-
-          print("Creating execution plan...\n")
-
-          plan = create_plan(query)
-
-          print("=== PLAN ===")
-          print(plan)
-
-          execute_plan(plan)
-
-
-          continue
+        query = input("\nWhat do you want to do? ").strip()
 
         if query.lower() == "exit":
             print("Goodbye.")
@@ -119,107 +32,100 @@ def main():
 
         save_message("user", query)
 
-        # 🔹 MEMORY FOLLOW-UP
+        # Memory follow-up
         if "language" in query.lower():
-
             last_repos = get_last_repos()
 
             if not last_repos:
                 print("No repositories in memory.")
-
             else:
-                results = analyze_repos(last_repos)
+                results = TOOLS["analyze_repos"](last_repos)
 
                 for repo in results:
-                    print(
-                        f"{repo['repo']} uses "
-                        f"{repo['language']}"
-                    )
-        
+                    print(f"{repo['repo']} uses {repo['language']}")
+
             continue
 
-        # 🔹 ROUTING
+        # Week 5 agentic planning flow
+        plan = create_advanced_plan(query)
+        print("DEBUG PLAN:", plan)
+
+        if plan:
+            print("\n=== EXECUTION PLAN ===")
+
+            for step in plan:
+                print(f"- {step['tool']}")
+
+            results = execute_plan(plan)
+
+            print("\n=== FINAL RESULTS ===\n")
+
+            for item in results:
+                print(f"\nTool: {item['tool']}")
+                print(f"Status: {item.get('status')}")
+                print(f"Retries: {item.get('retries')}")
+                print(f"Reason: {item.get('reason')}")
+                print("Result:")
+
+                if item["tool"] == "analyze_repos":
+                    display_repo_results(item["result"])
+                else:
+                    print(item["result"])
+
+            continue
+
+        # Fallback router flow
         action = route_request(query)
 
         print(f"Agent decided to: {action}")
 
-        if action in TOOLS:
+        if action not in TOOLS:
+            print("Unknown request.")
+            continue
 
-    # -----------------------------
-    # TOOL INPUT HANDLING
-    # -----------------------------
-            if action == "rag":
+        if action == "rag":
+            tool_input = query
 
-                tool_input = query
+        elif action == "analyze_repos":
+            repos_input = input("Enter repos (comma separated): ")
 
-            elif action == "analyze_repos":
+            repos = [
+                repo.strip()
+                for repo in repos_input.split(",")
+                if repo.strip()
+            ]
 
-                repos_input = input(
-                    "Enter repos (comma separated): "
-                )
+            save_repos(repos)
+            tool_input = repos
+            print(f"Status: {item['status']}")
+            print(f"Retries: {item['retries']}")    
 
-                repos = [
-                    repo.strip()
-                    for repo in repos_input.split(",")
-                    if repo.strip()
-               ]
-
-                save_repos(repos)
-
-                tool_input = repos
-
-            elif action == "summarizer":
-
-                article_text = input(
-                   "Paste the article text: "
-               )
-
-                tool_input = article_text
-
-            else:
-                tool_input = query
-
-    # -----------------------------
-    # RUN TOOL
-    # -----------------------------
-
-            print(f"Running tool: {action}")
-
-            tool_function = TOOLS[action]
-
-            results = tool_function(tool_input)
-
-    # -----------------------------
-    # DISPLAY RESULTS
-    # -----------------------------
-
-            print("\n=== Agent Results ===\n")
-
-            if action == "analyze_repos":
-
-                if not results:
-                   print("No repository results returned.")
-
-                else:
-
-                    for repo in results:
-
-                       print(f"Repo: {repo['repo']}")
-                       print(f"Stars: {repo['stars']}")
-                       print(f"Forks: {repo['forks']}")
-                       print(f"Language: {repo['language']}")
-
-                       print("AI Insight:")
-                       print(repo["ai_insight"])
-
-                       print("-" * 50)
-
-            else:
-
-                print(results)
+        elif action == "summarizer":
+            article_text = input("Paste the article text: ")
+            tool_input = article_text
+            print(f"Status: {item['status']}")
+            print(f"Retries: {item['retries']}")
 
         else:
-            print("Unknown request.")
+            tool_input = query
+
+        print(f"Running tool: {action}")
+
+        tool_function = TOOLS[action]
+        results = tool_function(tool_input)
+
+        print("\n=== Agent Results ===\n")
+
+        if action == "analyze_repos":
+            display_repo_results(results)
+        else:
+            if item["tool"] == "analyze_repos":
+                if not item["result"]:
+                    print("No repository results returned.")
+                else:
+                    display_repo_results(item["result"])
+            else:
+                print(item["result"])
 
 if __name__ == "__main__":
     main()
