@@ -3,6 +3,7 @@ from agent_executor import execute_plan
 from router import route_request
 from tools import TOOLS
 from memory import save_repos, get_last_repos, save_message
+from critic import llm_critique
 
 
 def display_repo_results(results):
@@ -46,7 +47,6 @@ def main():
 
             continue
 
-        # Week 5 agentic planning flow
         plan = create_advanced_plan(query)
         print("DEBUG PLAN:", plan)
 
@@ -57,6 +57,19 @@ def main():
                 print(f"- {step['tool']}")
 
             results = execute_plan(plan)
+            
+            critique = llm_critique(
+                    query,
+                    results
+            )
+
+            print("\n=== CRITIC ===")
+            print(
+                f"Passed: {critique['passed']}"
+            )
+            print(
+                f"Feedback: {critique['feedback']}"
+            )   
 
             print("\n=== FINAL RESULTS ===\n")
 
