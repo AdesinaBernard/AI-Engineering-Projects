@@ -4,6 +4,7 @@ from router import route_request
 from tools import TOOLS
 from memory import save_repos, get_last_repos, save_message
 from critic import llm_critique
+from coordinator import coordinate
 
 
 def display_repo_results(results):
@@ -19,6 +20,20 @@ def display_repo_results(results):
         print("AI Insight:")
         print(repo["ai_insight"])
         print("-" * 50)
+
+
+def display_execution_results(results):
+    for item in results:
+        print(f"\nTool: {item['tool']}")
+        print(f"Status: {item.get('status')}")
+        print(f"Retries: {item.get('retries')}")
+        print(f"Reason: {item.get('reason')}")
+        print("Result:")
+
+        if item["tool"] == "analyze_repos":
+            display_repo_results(item["result"])
+        else:
+            print(item["result"])
 
 
 def main():
@@ -47,8 +62,23 @@ def main():
 
             continue
 
+        # Multi-agent flow
+        if (
+            "analyze" in query.lower()
+            or "analyse" in query.lower()
+            or "explain" in query.lower()
+            or "summarize" in query.lower()
+            or "summarise" in query.lower()
+        ):
+            output = coordinate(query)
+
+            print("\n=== MULTI-AGENT RESULT ===")
+            print(output)
+
+            continue
+
+        # Agentic planning flow
         plan = create_advanced_plan(query)
-        print("DEBUG PLAN:", plan)
 
         if plan:
             print("\n=== EXECUTION PLAN ===")
@@ -57,33 +87,15 @@ def main():
                 print(f"- {step['tool']}")
 
             results = execute_plan(plan)
-            
-            critique = llm_critique(
-                    query,
-                    results
-            )
+
+            critique = llm_critique(query, results)
 
             print("\n=== CRITIC ===")
-            print(
-                f"Passed: {critique['passed']}"
-            )
-            print(
-                f"Feedback: {critique['feedback']}"
-            )   
+            print(f"Passed: {critique['passed']}")
+            print(f"Feedback: {critique['feedback']}")
 
-            print("\n=== FINAL RESULTS ===\n")
-
-            for item in results:
-                print(f"\nTool: {item['tool']}")
-                print(f"Status: {item.get('status')}")
-                print(f"Retries: {item.get('retries')}")
-                print(f"Reason: {item.get('reason')}")
-                print("Result:")
-
-                if item["tool"] == "analyze_repos":
-                    display_repo_results(item["result"])
-                else:
-                    print(item["result"])
+            print("\n=== FINAL RESULTS ===")
+            display_execution_results(results)
 
             continue
 
@@ -110,14 +122,10 @@ def main():
 
             save_repos(repos)
             tool_input = repos
-            print(f"Status: {item['status']}")
-            print(f"Retries: {item['retries']}")    
 
         elif action == "summarizer":
             article_text = input("Paste the article text: ")
             tool_input = article_text
-            print(f"Status: {item['status']}")
-            print(f"Retries: {item['retries']}")
 
         else:
             tool_input = query
@@ -127,18 +135,13 @@ def main():
         tool_function = TOOLS[action]
         results = tool_function(tool_input)
 
-        print("\n=== Agent Results ===\n")
+        print("\n=== Agent Results ===")
 
         if action == "analyze_repos":
             display_repo_results(results)
         else:
-            if item["tool"] == "analyze_repos":
-                if not item["result"]:
-                    print("No repository results returned.")
-                else:
-                    display_repo_results(item["result"])
-            else:
-                print(item["result"])
+            print(results)
+
 
 if __name__ == "__main__":
     main()
