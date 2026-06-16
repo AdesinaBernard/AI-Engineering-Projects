@@ -60,23 +60,48 @@ Return ONLY JSON:
 
         data = response.json()
 
-        content = data.get(
-            "content",
-            ""
-        )
+        content = data.get("content", "").strip()
 
+        if not content:
+            return {
+                "passed": False,
+                "feedback": "Critic returned empty response"
+            }
         start = content.find("{")
         end = content.rfind("}") + 1
 
-        parsed = json.loads(
-            content[start:end]
-        )
+        if start == -1 or end == 0:
+            return {
+                "passed": False,
+                "feedback": f"Critic returned non-JSON output: {content}"
+        }
+
+        parsed = json.loads(content[start:end])
 
         return parsed
 
-    except Exception as e:
-
+    except Exception:
+        return basic_critique(query, execution_results)
+    
+def basic_critique(query, execution_results):
+    if not execution_results:
         return {
             "passed": False,
-            "feedback": str(e)
+            "feedback": "No execution results were produced."
         }
+
+    failed_steps = [
+        item for item in execution_results
+        if item.get("status") == "failed"
+    ]
+
+    if failed_steps:
+        return {
+            "passed": False,
+            "feedback": f"{len(failed_steps)} step(s) failed."
+        }
+
+    return {
+        "passed": True,
+        "feedback": "All execution steps completed successfully."
+    }
