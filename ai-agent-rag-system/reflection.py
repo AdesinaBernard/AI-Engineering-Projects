@@ -32,6 +32,9 @@ def basic_evaluator(result):
 
 
 def evaluate_repo_result(result):
+    if isinstance(result, dict) and result.get("error"):
+        return False, result.get("reason", "Repo analysis failed")
+
     if not result:
         return False, "No repository results returned"
 

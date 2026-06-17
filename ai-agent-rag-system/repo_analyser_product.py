@@ -89,8 +89,20 @@ def fetch_repo_data(repo):
         }
 
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching {repo}: {e}")
-        return None
+        error_text = str(e)
+
+        if "rate limit exceeded" in error_text.lower():
+            return {
+                "error": True,
+                "repo": repo,
+                "reason": "GitHub rate limit exceeded"
+            }
+
+        return {
+                "error": True,
+                "repo": repo,
+                "reason": error_text
+         }
 
 
 def analyze_repos(repo_names):
@@ -101,14 +113,23 @@ def analyze_repos(repo_names):
 
         repo_data = fetch_repo_data(repo)
 
-        if repo_data:
+        if not repo_data:
+            continue
 
-            repo_data["engagement_score"] = (
-                repo_data["stars"] +
-                repo_data["forks"] * 2
-            )
+        if isinstance(repo_data, dict) and repo_data.get("error"):
+            return {
+                "error": True,
+                "tool": "analyze_repos",
+                "repo": repo_data.get("repo", repo),
+                "reason": repo_data.get("reason", "Repo fetch failed")
+            }
 
-            results.append(repo_data)
+        repo_data["engagement_score"] = (
+            repo_data["stars"] +
+            repo_data["forks"] * 2
+        )
+
+        results.append(repo_data)  
 
     if not results:
         return []

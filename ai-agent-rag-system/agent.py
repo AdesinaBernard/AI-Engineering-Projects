@@ -8,6 +8,12 @@ from coordinator import coordinate
 
 
 def display_repo_results(results):
+    if isinstance(results, dict) and results.get("error"):
+        print("Repository analysis failed.")
+        print(f"Repo: {results.get('repo')}")
+        print(f"Reason: {results.get('reason')}")
+        return
+
     if not results:
         print("No repository results returned.")
         return
