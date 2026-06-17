@@ -2,13 +2,18 @@ from tools import TOOLS
 from reflection import evaluate_result
 from prompt_optimizer import improve_tool_input
 from failure_memory import save_failure
+from execution_logger import log_event
 
 
 def execute_task(task, max_retries=2):
     task_type = task["tool"]
     task_input = task["input"]
 
+    log_event(f"Executing {task_type}")
+
     if task_type not in TOOLS:
+        log_event(f"{task_type} failed: unknown tool")
+
         return {
             "tool": task_type,
             "input": task_input,
@@ -37,6 +42,8 @@ def execute_task(task, max_retries=2):
         )
 
         if passed:
+            log_event(f"{task_type} success")
+
             return {
                 "tool": task_type,
                 "input": current_input,
@@ -48,6 +55,8 @@ def execute_task(task, max_retries=2):
 
         print(f"Reflection failed: {reason}")
         print(f"Retrying {task_type} ({retries + 1})...")
+
+        log_event(f"{task_type} failed: {reason}")
 
         save_failure(
             task_type,
