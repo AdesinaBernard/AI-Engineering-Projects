@@ -1,3 +1,6 @@
+from asyncio import tasks
+
+
 class TaskManager:
 
     def __init__(self):
@@ -6,6 +9,11 @@ class TaskManager:
 
     def add_task(self, task):
         self.tasks.append(task)
+
+    def add_tasks(self, tasks):
+
+        for task in tasks:
+            self.tasks.append(task)
 
     def next_task(self):
 
