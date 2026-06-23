@@ -5,7 +5,9 @@ from critic_agent import review
 from dynamic_planner import (
     generate_followup_tasks
 )
-
+from recursive_planner import (
+    create_subtasks
+)
 
 def run_goal(goal):
 
@@ -14,6 +16,10 @@ def run_goal(goal):
     tasks = decompose_goal(goal)
 
     for task in tasks:
+
+        if "depth" not in task:
+            task["depth"] = 0
+
         manager.add_task(task)
 
     results = []
@@ -29,9 +35,10 @@ def run_goal(goal):
 
         output = execute_task(task)
 
-        new_tasks = generate_followup_tasks(
+        new_tasks = create_subtasks(
             task,
-            output["result"]
+            output["result"],
+            task["depth"]
         )
 
         if new_tasks:
@@ -39,7 +46,7 @@ def run_goal(goal):
             print(
                 f"Generated "
                 f"{len(new_tasks)} "
-                f"new task(s)"
+                f"recursive task(s)"
         )
 
         manager.add_tasks(
