@@ -5,7 +5,12 @@ from tools import TOOLS
 from memory import save_repos, get_last_repos, save_message
 from critic import llm_critique
 from coordinator import coordinate
-
+from memory_extractor import (
+    extract_memory
+)
+from long_term_memory import (
+    get_facts
+)
 
 def display_repo_results(results):
     if isinstance(results, dict) and results.get("error"):
@@ -53,6 +58,7 @@ def main():
             break
 
         save_message("user", query)
+        extract_memory(query)
 
         # Memory follow-up
         if "language" in query.lower():
@@ -85,7 +91,8 @@ def main():
 
         # Agentic planning flow
         plan = create_advanced_plan(query)
-
+        facts = get_facts()
+        
         if plan:
             print("\n=== EXECUTION PLAN ===")
 
