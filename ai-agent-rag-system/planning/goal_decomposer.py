@@ -1,5 +1,4 @@
-from tool_selector import select_tool
-
+from core.tool_selector import select_tool
 
 def normalize_tool_input(tool, task_description):
     task_lower = task_description.lower()

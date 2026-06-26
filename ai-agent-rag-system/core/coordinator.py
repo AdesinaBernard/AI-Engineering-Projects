@@ -1,8 +1,8 @@
-from research_agent import research
-from agent_executor import execute_plan
-from critic_agent import review
-from advanced_planner import create_advanced_plan
-from long_horizon_agent import run_goal
+from agents.research_agent import research
+from core.agent_executor import execute_plan
+from agents.critic_agent import review
+from planning.advanced_planner import create_advanced_plan
+from agents.long_horizon_agent import run_goal
 
 
 def coordinate(query):

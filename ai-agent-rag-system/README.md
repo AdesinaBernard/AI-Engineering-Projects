@@ -1,114 +1,112 @@
 # Local AI Agent + Conversational RAG System
 
-A local AI engineering project that combines local LLM inference, semantic search, vector retrieval, conversational memory, and tool orchestration.
+This repository is a modular local AI agent and conversational RAG (retrieval-augmented generation) system. It provides document ingestion, semantic search, a vector store, conversational memory, multi-agent orchestration, planning, and evaluation tooling designed for local development and experimentation.
 
 ---
 
-## 🚀 Overview
+## 🚀 What Changed / Current Status
 
-This repository implements a local AI agent and conversational RAG (retrieval-augmented generation) system. It includes document ingestion, semantic search/vector storage, an interactive agent that routes to tools, and utilities for summarization, planning, and evaluation.
-
----
-
-## What's Included
-
-- `agent.py` — interactive agent that routes user queries to tools and manages short-term memory.
-- `router.py` — routes input to the appropriate tool (RAG, summarizer, planner, etc.).
-- `ingest.py` — document ingestion pipeline for building the vector store from `documents/`.
-- `vector_store.py` — simple persistent vector DB layer (backed by `vector_db.json`).
-- `semantic_search.py` — semantic search and embedding utilities.
-- `rag.py` — retrieval-augmented generation utilities using `knowledge_base.txt`.
-- `rag_chat.py` — conversational RAG interface/runner.
-- `rag_evaluator.py` — evaluation helpers for RAG responses.
-- `summarizer.py` — text summarization utilities.
-- `planner.py` — plan generation for multi-step tool execution.
-- `memory.py` and `conversation_memory.py` — in-memory conversation/session memory utilities.
-- `tools.py` — assorted helper tools used by the agent.
-- `knowledge_base.txt`, `documents/` — content used for RAG and ingestion.
-- `requirements.txt` — Python dependencies for running the project.
+- The project has been refactored into a multi-package layout with dedicated modules for agents, core orchestration, RAG, memory, planning, evaluation, and tooling.
+- Added multiple agent implementations under `agents/` (e.g., `planner_agent.py`, `research_agent.py`, `execution_agent.py`).
+- Added evaluation and dashboard utilities under `evaluation/` and `evaluation_suite.py` for running automated checks.
+- A Python virtual environment is included at `ai_env/` (optional — you can recreate or use your own).
 
 ---
 
-## 🔧 Current Features
+## Project Structure (high level)
 
-- Document ingestion and vectorization pipeline
-- Semantic search over ingested documents
-- Conversational RAG with source-aware responses
-- Interactive agent that can summarize, plan, and route tasks
-- Simple in-memory conversational memory for follow-ups
-- Evaluation utilities for RAG responses
+- `agent.py`, `agent_message.py` — root CLI entrypoints and message helpers.
+- `app/` — higher-level application glue (`app/agent.py`).
+- `agents/` — multiple agent implementations and coordinators.
+- `core/` — orchestration code: `agent_executor.py`, `coordinator.py`, `router.py`, and task/ tool management.
+- `rag/` — RAG pipeline and vector store: `ingest.py`, `rag.py`, `rag_chat.py`, `vector_store.py`, `semantic_search.py`, `rag_evaluator.py`.
+- `memory/` — memory implementations and extractors (`conversation_memory.py`, `long_term_memory.py`).
+- `planning/` — planners and goal decomposition utilities.
+- `evaluation/` and `evaluation_suite.py` — evaluation framework and dashboards.
+- `tools/` — helper tools such as `summarizer.py` and `prompt_optimizer.py`.
+- `data/` — `documents/`, `long_term_memory.json`, `vector_db.json`, `evaluations.json` used by ingestion and testing.
+- `tests/` — unit/integration tests for core behaviors.
+
+Refer to the source files for implementation details and docstrings.
 
 ---
 
-## 🧩 Requirements
+## 🔧 Requirements
 
-- Python 3.10+ (3.11 recommended)
-- Install dependencies from `requirements.txt` (includes `requests`, `sentence-transformers`, `transformers`, `torch`, etc.)
-- Optional: a local LLM or embedding provider if you want to run large-model inference locally
+- Python 3.10+ (3.11 recommended).
+- Install dependencies from `requirements.txt`.
+
+If you want to use GPU-accelerated models or local LLMs, ensure you have the appropriate frameworks installed (PyTorch, CUDA drivers, etc.).
 
 ---
 
-## ⚙️ Installation
+## ⚙️ Installation (recommended)
+
+Use a virtual environment and install dependencies:
 
 ```bash
-git clone <this-repo-url-or-copy-local-folder>
 cd ai-agent-rag-system
-python3 -m venv ai_env
-source ai_env/bin/activate
+python3 -m venv .venv    # or reuse included `ai_env/` if desired
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 ---
 
-## ▶️ Quick Start / Usage
+## ▶️ Common Commands / Quick Start
 
-Ingest documents to build/update the vector store:
-
-```bash
-python ingest.py
-```
-
-Start a conversational RAG demo:
-
-```bash
-python rag_chat.py
-```
-
-Start the interactive agent (CLI):
+- Run the root interactive agent (CLI):
 
 ```bash
 python agent.py
 ```
 
-Other utilities:
+- Run the app-level agent:
 
-- `python rag.py` — run RAG utilities (script may be used programmatically).
-- `python semantic_search.py` — run or import semantic search helpers.
+```bash
+python -m app.agent
+```
+
+- Ingest documents into the vector store (RAG ingestion):
+
+```bash
+python -m rag.ingest
+```
+
+- Start a conversational RAG demo (module):
+
+```bash
+python -m rag.rag_chat
+```
+
+- Run the evaluation dashboard:
+
+```bash
+python -m evaluation.evaluation_dashboard
+```
+
+- Run tests:
+
+```bash
+pytest -q
+```
 
 ---
 
-## 📌 Notes
+## 🔎 Notes & Conventions
 
-- The project expects `documents/` and `knowledge_base.txt` as inputs for retrieval. Adjust ingestion/config as needed.
-- In-memory session state is used by default; persistence can be added later.
-- Check `requirements.txt` for exact dependency versions used in development.
-
----
-
-## 🚧 Future Improvements
-
-- Add JSON/CSV export for report output and evaluation results
-- Improve CLI argument parsing and user-facing help
-- Add authentication and robust rate-limit handling for external APIs
-- Add options for persistent memory backends
-- Extend the retrieval pipeline (more advanced index types, ANN indexing)
+- Short-lived session memory is kept in-memory by default; `memory/long_term_memory.py` contains examples for persistence.
+- The `data/documents/` folder and `data/*json` files are used as sample inputs for ingestion and evaluation.
+- Many components can be used programmatically — import the modules and call the helper functions from scripts or notebooks.
 
 ---
 
-## Architecture (high level)
+## 🚧 Future Work / Next Steps
 
-User Input → Router → Tool Registry → Ingestion / RAG / Summarizer / Planner → LLM/Embedding Provider → Response
+- Harden CLI argument parsing and add better help text for scripts under `rag/` and `agents/`.
+- Add optional persistent memory backends and alternate vector indices (FAISS, Annoy, etc.).
+- Add example notebooks and end-to-end demo scripts.
 
 ---
 
-For details, see the project files and the docstrings in the code.
+If you'd like, I can (1) run the test suite, (2) run the evaluation dashboard to confirm examples, or (3) create a compact CONTRIBUTING.md and quick developer guide.

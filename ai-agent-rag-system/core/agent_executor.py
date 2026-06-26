@@ -1,8 +1,8 @@
-from tools import TOOLS
-from reflection import evaluate_result
-from prompt_optimizer import improve_tool_input
-from failure_memory import save_failure
-from execution_logger import log_event
+from core.tools import TOOLS
+from evaluation.reflection import evaluate_result
+from tools.prompt_optimizer import improve_tool_input
+from memory.failure_memory import save_failure
+from core.execution_logger import log_event
 
 
 def execute_task(task, max_retries=2):

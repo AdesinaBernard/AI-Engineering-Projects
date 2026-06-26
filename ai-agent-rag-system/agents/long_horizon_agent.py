@@ -1,13 +1,8 @@
-from task_manager import TaskManager
-from goal_decomposer import decompose_goal
-from agent_executor import execute_task
-from critic_agent import review
-from dynamic_planner import (
-    generate_followup_tasks
-)
-from recursive_planner import (
-    create_subtasks
-)
+from core.task_manager import TaskManager
+from planning.goal_decomposer import decompose_goal
+from core.agent_executor import execute_task
+from agents.critic_agent import review
+from planning.recursive_planner import create_subtasks
 
 def run_goal(goal):
 

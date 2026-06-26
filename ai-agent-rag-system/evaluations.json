@@ -21,63 +21,13 @@
     }
   },
   {
-    "tasks": 6,
-    "successes": 4,
-    "failures": 2,
-    "retries": 6,
-    "score": 6.7,
+    "tasks": 1,
+    "successes": 1,
+    "failures": 0,
+    "retries": 0,
+    "score": 100.0,
     "tools": {
       "rag": {
-        "success": 2,
-        "failed": 2
-      },
-      "analyze_repos": {
-        "success": 1,
-        "failed": 0
-      },
-      "summarizer": {
-        "success": 1,
-        "failed": 0
-      }
-    }
-  },
-  {
-    "tasks": 6,
-    "successes": 4,
-    "failures": 2,
-    "retries": 6,
-    "score": 6.7,
-    "tools": {
-      "rag": {
-        "success": 2,
-        "failed": 2
-      },
-      "analyze_repos": {
-        "success": 1,
-        "failed": 0
-      },
-      "summarizer": {
-        "success": 1,
-        "failed": 0
-      }
-    }
-  },
-  {
-    "tasks": 6,
-    "successes": 4,
-    "failures": 2,
-    "retries": 6,
-    "score": 6.7,
-    "tools": {
-      "rag": {
-        "success": 2,
-        "failed": 2
-      },
-      "analyze_repos": {
-        "success": 1,
-        "failed": 0
-      },
-      "summarizer": {
         "success": 1,
         "failed": 0
       }

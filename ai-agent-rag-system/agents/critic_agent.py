@@ -1,4 +1,4 @@
-from critic import llm_critique
+from evaluation.critic import llm_critique
 from agent_message import create_message
 
 
