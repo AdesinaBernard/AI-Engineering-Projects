@@ -11,6 +11,12 @@ from memory_extractor import (
 from long_term_memory import (
     get_facts
 )
+from collaboration_coordinator import run_collaboration
+from evaluation_framework import evaluate_execution
+from evaluation_history import save_evaluation
+
+
+
 
 def display_repo_results(results):
     if isinstance(results, dict) and results.get("error"):
@@ -59,7 +65,7 @@ def main():
 
         save_message("user", query)
         extract_memory(query)
-
+        
         # Memory follow-up
         if "language" in query.lower():
             last_repos = get_last_repos()
@@ -82,7 +88,17 @@ def main():
             or "summarize" in query.lower()
             or "summarise" in query.lower()
         ):
+
             output = coordinate(query)
+
+            evaluation = evaluate_execution(output["results"])
+
+            print("\n=== EVALUATION ===")
+
+            for key, value in evaluation.items():
+                print(f"{key}: {value}")
+
+            save_evaluation(evaluation)
 
             print("\n=== MULTI-AGENT RESULT ===")
             print(output)
@@ -92,7 +108,7 @@ def main():
         # Agentic planning flow
         plan = create_advanced_plan(query)
         facts = get_facts()
-        
+
         if plan:
             print("\n=== EXECUTION PLAN ===")
 
@@ -100,6 +116,15 @@ def main():
                 print(f"- {step['tool']}")
 
             results = execute_plan(plan)
+
+            evaluation = evaluate_execution(results)
+
+            print("\n=== EVALUATION ===")
+
+            for key, value in evaluation.items():
+                print(f"{key}: {value}")
+
+            save_evaluation(evaluation)
 
             critique = llm_critique(query, results)
 
@@ -154,6 +179,11 @@ def main():
             display_repo_results(results)
         else:
             print(results)
+        if "collaborate" in query.lower():
+            result = run_collaboration(query)
+            print("\n=== COLLABORATIVE AGENT RESULT ===")
+            print(result)
+            continue
 
 
 if __name__ == "__main__":

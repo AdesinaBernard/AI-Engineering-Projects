@@ -3,3 +3,6 @@ Python is widely used for AI engineering, automation, and backend systems.
 NumPy and Pandas are foundational Python libraries for data science.
 
 Python is used by many AI frameworks including TensorFlow, PyTorch, Scikit-learn, FastAPI-based AI services, LangChain, CrewAI, and LlamaIndex.
+
+Python is used by many AI frameworks including TensorFlow, PyTorch, Scikit-learn, LangChain, CrewAI, LlamaIndex, and FastAPI-based AI services.
+
