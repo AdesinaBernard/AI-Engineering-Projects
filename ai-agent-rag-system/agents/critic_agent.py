@@ -1,5 +1,5 @@
 from evaluation.critic import llm_critique
-from agent_message import create_message
+from agents.agent_message import create_message
 
 
 def review(query, results):

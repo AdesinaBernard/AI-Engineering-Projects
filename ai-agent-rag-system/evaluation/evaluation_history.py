@@ -1,7 +1,7 @@
 import json
 import os
 
-FILE = "evaluations.json"
+FILE = "data/evaluations.json"
 
 
 def save_evaluation(report):

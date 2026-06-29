@@ -1,7 +1,7 @@
 import json
 import os
 
-MEMORY_FILE = "long_term_memory.json"
+MEMORY_FILE = "data/long_term_memory.json"
 
 
 def load_memory():

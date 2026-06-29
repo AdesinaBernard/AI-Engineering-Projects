@@ -6,9 +6,9 @@ model = SentenceTransformer(
     "all-MiniLM-L6-v2"
 )
 
-DOCUMENTS_PATH = "documents"
+DOCUMENTS_PATH = "data/documents"
 
-VECTOR_DB_FILE = "vector_db.json"
+VECTOR_DB_FILE = "data/vector_db.json"
 
 
 def chunk_text(text, chunk_size=2, overlap=1):

@@ -11,7 +11,7 @@ model = SentenceTransformer(
     "all-MiniLM-L6-v2"
 )
 
-VECTOR_DB_FILE = "vector_db.json"
+VECTOR_DB_FILE = "data/vector_db.json"
 
 
 def create_vector_db():

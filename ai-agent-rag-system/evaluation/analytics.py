@@ -1,6 +1,4 @@
-from failure_memory import (
-    get_failures
-)
+from memory.failure_memory import get_failures
 
 
 def show_failures():

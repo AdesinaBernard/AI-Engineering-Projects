@@ -1,5 +1,5 @@
-from agent_executor import execute_plan
-from agent_message import create_message
+from core.agent_executor import execute_plan
+from agents.agent_message import create_message
 
 
 def execute_from_plan(plan_message):

@@ -11,7 +11,7 @@ import json
 
 LLM_URL = "http://localhost:8080/completion"
 
-VECTOR_DB_FILE = "vector_db.json"
+VECTOR_DB_FILE = "data/vector_db.json"
 
 model = SentenceTransformer(
     "all-MiniLM-L6-v2"

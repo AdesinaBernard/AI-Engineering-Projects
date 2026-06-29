@@ -1,5 +1,5 @@
 from advanced_planner import create_advanced_plan
-from agent_message import create_message
+from agents.agent_message import create_message
 
 
 def plan_from_research(research_message):
