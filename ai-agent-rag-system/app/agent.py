@@ -9,6 +9,7 @@ from evaluation.critic import llm_critique
 from core.coordinator import coordinate
 from evaluation.evaluation_framework import evaluate_execution
 from evaluation.evaluation_history import save_evaluation
+from agents.autonomous_research_agent import run_autonomous_research
 
 
 
@@ -59,6 +60,27 @@ def main():
 
         save_message("user", query)
         extract_memory(query)
+
+        if (
+            "autonomous research" in query.lower()
+            or "research independently" in query.lower()
+        ):
+            topic = (
+                query.lower()
+                .replace("autonomous research", "")
+                .replace("research independently", "")
+                .strip()
+            )
+
+            if not topic:
+                topic = query
+
+            result = run_autonomous_research(topic)
+
+            print("\n=== AUTONOMOUS RESEARCH RESULT ===")
+            print(result["report"])
+
+            continue
         
         # Memory follow-up
         if "language" in query.lower():
