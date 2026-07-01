@@ -6,7 +6,7 @@ def log_event(event):
         "%Y-%m-%d %H:%M:%S"
     )
 
-    with open("agent.log", "a") as f:
+    with open("data/agent.log", "a") as f:
         f.write(
             f"[{timestamp}] {event}\n"
         )

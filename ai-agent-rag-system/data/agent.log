@@ -193,3 +193,5 @@
 [2026-06-26 13:56:02] rag failed: RAG could not find context
 [2026-06-26 13:56:07] rag failed: RAG could not find context
 [2026-06-26 13:56:09] rag failed: RAG could not find context
+[2026-07-01 11:38:45] Executing summarizer
+[2026-07-01 11:39:13] summarizer success

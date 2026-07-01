@@ -1,8 +1,8 @@
-from research_agent import research
-from planner_agent import plan_from_research
-from execution_agent import execute_from_plan
-from critic_agent import review_execution
-from agent_message import print_message
+from agents.research_agent import research
+from agents.planner_agent import plan_from_research
+from agents.execution_agent import execute_from_plan
+from agents.critic_agent import review_execution
+from agents.agent_message import print_message
 
 
 def run_collaboration(query):

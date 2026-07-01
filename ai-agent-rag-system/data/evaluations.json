@@ -103,5 +103,18 @@
         "failed": 0
       }
     }
+  },
+  {
+    "tasks": 1,
+    "successes": 1,
+    "failures": 0,
+    "retries": 0,
+    "score": 100.0,
+    "tools": {
+      "summarizer": {
+        "success": 1,
+        "failed": 0
+      }
+    }
   }
 ]

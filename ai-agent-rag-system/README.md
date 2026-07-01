@@ -1,3 +1,32 @@
+## Architecture
+
+This project is a modular local AI agent system.
+
+Core layers:
+
+- App entrypoint: `app/agent.py`
+- Coordination: `core/coordinator.py`
+- Execution: `core/agent_executor.py`
+- Planning: `planning/`
+- Agents: `agents/`
+- RAG: `rag/`
+- Memory: `memory/`
+- Evaluation: `evaluation/`
+- Tools: `tools/`
+- Data: `data/`
+
+Main capabilities:
+
+- Local LLM inference
+- Semantic retrieval
+- Conversational RAG
+- Autonomous research agent
+- Multi-agent collaboration
+- Recursive task generation
+- Long-term memory
+- Reflection and failure handling
+- Evaluation scoring
+
 # Local AI Agent + Conversational RAG System
 
 This repository is a modular local AI agent and conversational RAG (retrieval-augmented generation) system. It provides document ingestion, semantic search, a vector store, conversational memory, multi-agent orchestration, planning, and evaluation tooling designed for local development and experimentation.
