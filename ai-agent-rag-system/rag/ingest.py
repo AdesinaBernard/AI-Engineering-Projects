@@ -1,0 +1,118 @@
+from sentence_transformers import SentenceTransformer
+from app.config import config
+import os
+import json
+
+model = SentenceTransformer(
+    config.EMBEDDING_MODEL
+)
+
+DOCUMENTS_PATH = "data/documents"
+
+VECTOR_DB_FILE = config.VECTOR_DB
+
+
+def chunk_text(text, chunk_size=2, overlap=1):
+    lines = [
+        line.strip()
+        for line in text.split("\n")
+        if line.strip()
+    ]
+
+    chunks = []
+    step = max(1, chunk_size - overlap)
+
+    for i in range(0, len(lines), step):
+        chunk = "\n".join(lines[i:i + chunk_size])
+
+        if chunk:
+            chunks.append(chunk)
+
+    return chunks
+
+
+def load_documents():
+    documents = []
+
+    if not os.path.exists(DOCUMENTS_PATH):
+        print(f"Documents folder not found: {DOCUMENTS_PATH}")
+        return documents
+
+    files = os.listdir(DOCUMENTS_PATH)
+    print(f"Found files: {files}")
+
+    for filename in files:
+        if not filename.endswith(".txt"):
+            continue
+
+        filepath = os.path.join(DOCUMENTS_PATH, filename)
+
+        with open(filepath, "r", encoding="utf-8") as f:
+            content = f.read().strip()
+
+        if not content:
+            print(f"Skipping empty file: {filename}")
+            continue
+
+        documents.append({
+            "source": filename,
+            "content": content
+        })
+
+    print(f"Loaded {len(documents)} documents.")
+    return documents
+
+def create_vector_db():
+
+    all_chunks = []
+
+    documents = load_documents()
+
+    for doc in documents:
+
+        chunks = chunk_text(
+            doc["content"]
+        )
+
+        for chunk in chunks:
+
+            all_chunks.append({
+                "source": doc["source"],
+                "text": chunk
+            })
+
+    texts = [
+        chunk["text"]
+        for chunk in all_chunks
+    ]
+
+    embeddings = model.encode(texts)
+
+    vector_data = []
+
+    for chunk, embedding in zip(
+        all_chunks,
+        embeddings
+    ):
+
+        vector_data.append({
+            "source": chunk["source"],
+            "text": chunk["text"],
+            "embedding": embedding.tolist()
+        })
+
+    with open(
+        VECTOR_DB_FILE,
+        "w"
+    ) as f:
+
+        json.dump(vector_data, f)
+
+    print(
+        f"Stored {len(vector_data)} chunks."
+    )
+
+
+if __name__ == "__main__":
+
+    create_vector_db()

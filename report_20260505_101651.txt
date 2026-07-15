@@ -1,0 +1,18 @@
+Fetched: python/cpython (72579 stars)
+Fetched: AdesinaBernard/SamplingInPython (0 stars)
+
+Top repos by engagement:
+- python/cpython: 141679 (engagement)
+- AdesinaBernard/SamplingInPython: 0 (engagement)
+
+=== Top Repositories ===
+1. python/cpython
+   Stars: 72579
+   Forks: 34550
+   Score: 141679
+
+2. AdesinaBernard/SamplingInPython
+   Stars: 0
+   Forks: 0
+   Score: 0
+

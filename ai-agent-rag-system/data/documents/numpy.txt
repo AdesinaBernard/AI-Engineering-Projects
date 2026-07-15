@@ -1,0 +1,15 @@
+NumPy arrays are the core data structure in NumPy. They are called ndarray objects. NumPy arrays store values of the same data type and support fast numerical operations.
+
+NumPy arrays differ from Python lists because NumPy arrays are faster, more memory-efficient, and optimized for mathematical computation. Python lists are general-purpose containers, while NumPy arrays are designed for numerical computing.
+
+NumPy arrays have key properties including shape, size, dimension, and data type. The shape describes the array structure, size describes the number of elements, dimension describes the number of axes, and dtype describes the data type.
+
+NumPy supports data types such as integers, floats, booleans, complex numbers, and strings. Choosing smaller numeric data types can reduce memory usage and improve performance.
+
+NumPy supports linear algebra operations such as matrix multiplication, dot products, solving linear systems, decompositions, and eigenvalue calculations through numpy.linalg.
+
+NumPy broadcasting allows operations between arrays with different shapes. Broadcasting is useful because it avoids unnecessary copying and makes vectorized operations easier and faster.
+
+Broadcasting works when array dimensions are compatible. Two dimensions are compatible when they are equal or when one of them is 1.
+
+NumPy is preferred over Python loops for numerical operations because NumPy uses optimized low-level code and vectorized operations to process arrays faster.

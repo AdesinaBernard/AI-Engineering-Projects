@@ -1,0 +1,67 @@
+Fetched: freeCodeCamp/freeCodeCamp (444317 stars)
+Fetched: nilbuild/developer-roadmap (354373 stars)
+Fetched: sindresorhus/awesome (463704 stars)
+Fetched: facebook/react (244872 stars)
+Fetched: openai/openai-python (30705 stars)
+Fetched: shadcn-ui/ui (113752 stars)
+Fetched: microsoft/vscode (184660 stars)
+Fetched: public-apis/public-apis (433022 stars)
+Fetched: docker/cli (5836 stars)
+Fetched: laravel/laravel (84188 stars)
+
+Top repos by engagement:
+- sindresorhus/awesome: 533312
+- freeCodeCamp/freeCodeCamp: 533305
+- public-apis/public-apis: 527740
+- nilbuild/developer-roadmap: 442463
+- facebook/react: 346890
+- microsoft/vscode: 264038
+- laravel/laravel: 133602
+- shadcn-ui/ui: 131244
+- openai/openai-python: 40249
+- docker/cli: 10088
+
+=== Top Repositories ===
+1. sindresorhus/awesome
+   Stars: 463704
+   Forks: 34804
+   Score: 533312
+
+AI Insight (JSON):
+{
+  "summary": "A library for generating JSON",
+  "strength": "Strong community with many forks.",
+  "use_case": "Generating JSON files."
+}
+2. freeCodeCamp/freeCodeCamp
+   Stars: 444317
+   Forks: 44494
+   Score: 533305
+
+Invalid JSON Output:
+{
+  "summary": "A popular online platform for learning web development",
+  "strength": "Popularity and community support",
+  "use_case": "Learning web development concepts"
+}
+
+{
+  "summary": "An open source project with a focus on data analysis.",
+  "strength": "Strong community support",
+  "use_case": "Data science and analytics."
+}
+
+3. public-apis/public-apis
+   Stars: 433022
+   Forks: 47359
+   Score: 527740
+
+Invalid JSON Output:
+{
+  "summary": "API for accessing APIs",
+  "strength": "Widely adopted with strong community",
+  "use_case": "Used in data science and analytics"
+}
+
+{"summary":"A tool that can be used to access API","strength":"Widely adopted with strong community","use_case":"Used in data science"}
+

@@ -1,0 +1,22 @@
+Fetched: python/cpython (72602 stars)
+
+Top repos by engagement:
+- python/cpython: 141716
+
+=== Top Repositories ===
+1. python/cpython
+   Stars: 72602
+   Forks: 34557
+   Score: 141716
+
+Invalid JSON Output:
+
+{
+  "summary": "Python implementation",
+  "strength": "Widely adopted with strong community",
+  "use_case": "Used in data science and analytics"
+}
+
+
+{"summary":"python implementation","strength":"widely adopted with strong community","use_case":"used in data science and analytics"}
+

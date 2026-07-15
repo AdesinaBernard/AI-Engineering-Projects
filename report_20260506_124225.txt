@@ -1,0 +1,70 @@
+Fetched: freeCodeCamp/freeCodeCamp (444242 stars)
+Fetched: nilbuild/developer-roadmap (354292 stars)
+Fetched: sindresorhus/awesome (463150 stars)
+Fetched: facebook/react (244829 stars)
+Fetched: openai/openai-python (30695 stars)
+Fetched: shadcn-ui/ui (113648 stars)
+Fetched: microsoft/vscode (184604 stars)
+Fetched: public-apis/public-apis (432532 stars)
+Fetched: docker/cli (5829 stars)
+Fetched: laravel/laravel (84169 stars)
+
+Top repos by engagement:
+- freeCodeCamp/freeCodeCamp: 533192
+- sindresorhus/awesome: 532692
+- public-apis/public-apis: 527112
+- nilbuild/developer-roadmap: 442366
+- facebook/react: 346831
+- microsoft/vscode: 263922
+- laravel/laravel: 133571
+- shadcn-ui/ui: 131122
+- openai/openai-python: 40233
+- docker/cli: 10079
+
+=== Top Repositories ===
+1. freeCodeCamp/freeCodeCamp
+   Stars: 444242
+   Forks: 44475
+   Score: 533192
+
+Invalid JSON Output:
+{
+  "summary": "A popular online platform for learning web development",
+  "strength": "Popularity and community support",
+  "use_case": "Learning web development concepts"
+}
+```json
+{
+  "summary": "An open source library that allows you to easily create a website.",
+  "strength": "Easy-to-create, easy-to-learn",
+  "use_case": "Creating websites with ease."
+}
+```json
+{"summary":"A popular online platform for learning web development","strength":"Popularity
+2. sindresorhus/awesome
+   Stars: 463150
+   Forks: 34771
+   Score: 532692
+
+Invalid JSON Output:
+```json
+{
+  "summary": "A library that provides a simple way to check if the user is interested in this",
+  "strength": "Simple and easy-to use.",
+  "use_case": "Used for checking whether users are interested."
+}
+```
+3. public-apis/public-apis
+   Stars: 432532
+   Forks: 47290
+   Score: 527112
+
+Invalid JSON Output:
+{
+  "summary": "API for accessing APIs",
+  "strength": "Widely adopted with strong community",
+  "use_case": "Used in data science and analytics"
+}
+```json
+{"summary":"API for accessing APIs","strength":"Widely adopted with strong community","use_case":"Used in data science and analytics"}
+```

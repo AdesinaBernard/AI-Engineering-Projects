@@ -1,0 +1,15 @@
+Fetched: numpy/numpy (31979 stars)
+
+Top repos by engagement:
+- numpy/numpy: 56663
+
+=== Top Repositories ===
+1. numpy/numpy
+   Stars: 31979
+   Forks: 12342
+   Score: 56663
+
+AI Insight:
+-
+-
+-
